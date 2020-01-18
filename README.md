@@ -17,3 +17,7 @@ https://fr.overleaf.com/read/cdcxfgfnrzqr
 4. Resultat / Demo
 
 5. Conclusion + en theorie, mais en pratique
+
+## Tester ?
+
+Importer un .utm sur le site https://turingmachinesimulator.com
