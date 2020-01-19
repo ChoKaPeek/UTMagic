@@ -17,7 +17,7 @@ class App:
     def load_images(self):
         all_names = [f for f in listdir("../images") if isfile(join("../images", f))]
         for name in all_names:
-            self.images[name] = pygame.image.load("../images/" + name)
+            self.images[name] = pygame.image.load(join("../images", name))
 
     def run(self):
         while True:
