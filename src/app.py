@@ -8,6 +8,8 @@ class App:
         self.size = size
         self.background = background
         self.screen = pygame.display.set_mode(self.size)
+        self.game_objects = []
+        self.clock = pygame.time.Clock()
 
     def run(self):
         while True:
@@ -15,6 +17,9 @@ class App:
                 if event.type == pygame.QUIT:
                     sys.exit()
             self.screen.fill(self.background)
+            for obj in self.game_objects:
+                obj.update(self.clock.get_time)
+                obj.draw(self.screen)
             pygame.display.flip()
 
 
