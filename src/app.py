@@ -1,5 +1,7 @@
 import pygame
 import sys
+from os import listdir
+from os.path import isfile, join
 
 
 class App:
@@ -10,6 +12,12 @@ class App:
         self.screen = pygame.display.set_mode(self.size)
         self.game_objects = []
         self.clock = pygame.time.Clock()
+        self.images = {}
+
+    def load_images(self):
+        all_names = [f for f in listdir("../images") if isfile(join("../images", f))]
+        for name in all_names:
+            self.images[name] = pygame.image.load("../images/" + name)
 
     def run(self):
         while True:
@@ -25,4 +33,5 @@ class App:
 
 if __name__ == '__main__':
     app = App((1000, 700))
+    app.load_images()
     app.run()
