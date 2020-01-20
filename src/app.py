@@ -3,6 +3,7 @@ import sys
 from os import listdir
 from os.path import isfile, join
 from game.tape import Tape
+from game.deck import Deck
 
 
 class App:
@@ -17,6 +18,7 @@ class App:
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont('FreeMono.ttf', 40)
         self.mouse = (0, 0)
+        self.mouse_click = False
         self.images = {}
         self.tape = None
 
@@ -27,11 +29,14 @@ class App:
 
     def init_game(self):
         self.tape = Tape("ABCDE", self)
+        Deck((1700, 800), self)
 
     def spawn(self, obj):
         self.game_objects.append(obj)
 
     def handle_input(self):
+        self.mouse = pygame.mouse.get_pos()
+        self.mouse_click = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -41,12 +46,13 @@ class App:
                     self.tape.move_index(1)
                 if event.key == pygame.K_LEFT:
                     self.tape.move_index(-1)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self.mouse_click = True
 
     def run(self):
         while True:
             self.handle_input()
             delta_time = self.clock.tick()
-            self.mouse = pygame.mouse.get_pos()
             self.screen.fill(self.background)
             for obj in self.game_objects:
                 obj.update(delta_time)
