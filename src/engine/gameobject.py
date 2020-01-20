@@ -1,15 +1,18 @@
-from Engine.transform import Transform
+from engine.transform import Transform
 
 
 class GameObject:
-    def __init__(self, sprite, coords=(0, 0), parent=None):
+    def __init__(self, sprite, coords, parent, app):
         self.transform = Transform(coords, parent)
-        self.rec = sprite.get_rect()
-        self.sprite = sprite
+        if sprite:
+            self.rec = sprite.get_rect()
+            self.sprite = sprite
+        self.app = app
+        app.spawn(self)
 
     def update(self, delta_time):
         pass
 
     def draw(self, screen):
-        self.rec.top, self.rec.left = self.transform.get_global_coords()
+        self.rec.left, self.rec.top = self.transform.get_global_coords()
         screen.blit(self.sprite, self.rec)
