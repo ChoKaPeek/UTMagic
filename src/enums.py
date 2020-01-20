@@ -21,27 +21,32 @@ class Symbol(Enum):
     CARDH = 17
     EMPTY = 18
 
-    def by_rep(this, rep):
-        if isinstance(value, str):
-            if value == "_":
-                return this["EMPTY"]
-            return this(ord(value) - 87) # 'a' -> 10
-        return this(value)
+    @classmethod
+    def by_rep(cls, rep):
+        rep = rep.lower()
+        try:
+            return cls(int(rep))
+        except ValueError:
+            if rep == "_":
+                return cls["EMPTY"]
+            return cls(ord(rep) - 87) # 'a' -> 10
 
 class State(Enum):
     EAT = 0
     INCR = 1
     END = 2
 
-    def by_rep(this, rep):
-        return this[upper(name[2:])]
+    @classmethod
+    def by_rep(cls, rep):
+        return cls[rep[2:].upper()]
 
 class Direction(Enum):
     RIGHT = 0
     LEFT = 1
     NONE = 2
 
-    def by_rep(this, rep):
+    @classmethod
+    def by_rep(cls, rep):
         if rep == "-":
-            return this["NONE"]
-        return rep == ">" ? this["RIGHT"] : this["LEFT"]
+            return cls["NONE"]
+        return cls["RIGHT"]  if rep == ">" else cls["LEFT"]
