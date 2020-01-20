@@ -36,9 +36,11 @@ class App:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        key = pygame.key.get_pressed()
-        if key[pygame.K_RIGHT]:
-            pass#print("ok")
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    self.tape.move_index(1)
+                if event.key == pygame.K_LEFT:
+                    self.tape.move_index(-1)
 
     def run(self):
         while True:

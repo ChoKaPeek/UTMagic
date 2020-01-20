@@ -29,4 +29,7 @@ class Tape(GameObject):
             self.cards[i].transform.move_to((distance_head * 120 - 60, self.cards[i].transform.local_y), delta_time)
 
     def move_index(self, delta):
+        if 0 <= self.index < len(self.cards):
+            card = self.cards[self.index]
+            card.move_local_y(0)
         self.index += delta
