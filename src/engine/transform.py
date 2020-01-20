@@ -6,10 +6,10 @@ class Transform:
 
     def get_global_coords(self):
         if not self.parent:
-            return self.local_x, self.local_y
+            return int(self.local_x), int(self.local_y)
         parent_global_coords = self.parent.get_global_coords()
-        return (self.local_x + parent_global_coords[0],
-                self.local_y + parent_global_coords[1])
+        return (int(self.local_x) + parent_global_coords[0],
+                int(self.local_y) + parent_global_coords[1])
 
     def attach(self, child):
         if child.parent:

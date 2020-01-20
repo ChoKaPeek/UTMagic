@@ -15,6 +15,7 @@ class App:
         self.game_objects = []
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont('FreeMono.ttf', 40)
+        self.mouse = (0, 0)
         self.images = {}
 
     def load_images(self):
@@ -32,9 +33,11 @@ class App:
                     pygame.quit()
                     sys.exit()
             delta_time = self.clock.tick()
+            self.mouse = pygame.mouse.get_pos()
             self.screen.fill(self.background)
             for obj in self.game_objects:
                 obj.update(delta_time)
+                self.game_objects.sort(key=lambda obj: obj.layer)
                 obj.draw(self.screen)
             pygame.display.flip()
 
