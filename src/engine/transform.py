@@ -22,3 +22,8 @@ class Transform:
         child.local_y += old_parent[1] - new_parent[1]
         self.children.append(child)
         child.parent = self
+
+    def move_to(self, coords, delta_time):
+        speed = delta_time / 300
+        self.local_x = self.local_x - (self.local_x - coords[0]) * speed
+        self.local_y = self.local_y - (self.local_y - coords[1]) * speed
