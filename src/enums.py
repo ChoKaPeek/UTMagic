@@ -18,8 +18,7 @@ class Symbol(Enum):
     CARDE = 14
     CARDF = 15
     CARDG = 16
-    CARDH = 17
-    EMPTY = 18
+    CARD_ = 17
 
     @classmethod
     def by_rep(cls, rep):
@@ -28,8 +27,13 @@ class Symbol(Enum):
             return cls(int(rep))
         except ValueError:
             if rep == "_":
-                return cls["EMPTY"]
+                return cls["CARD_"]
             return cls(ord(rep) - 87) # 'a' -> 10
+
+    @classmethod
+    def max_len(cls, title):
+        return max([len(e.name) - len("CARD") for e in cls] + [len(title)])
+
 
 class State(Enum):
     EAT = 0
@@ -39,6 +43,11 @@ class State(Enum):
     @classmethod
     def by_rep(cls, rep):
         return cls[rep[2:].upper()]
+
+    @classmethod
+    def max_len(cls, title):
+        return max([len(e.name) for e in cls] + [len(title)])
+
 
 class Direction(Enum):
     RIGHT = 0
@@ -50,3 +59,7 @@ class Direction(Enum):
         if rep == "-":
             return cls["NONE"]
         return cls["RIGHT"]  if rep == ">" else cls["LEFT"]
+
+    @classmethod
+    def max_len(cls, title):
+        return max([len(e.name) for e in cls] + [len(title)])

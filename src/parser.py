@@ -40,10 +40,10 @@ def read(f):
     return content
 
 def display(dic):
-    symbol_len = max(get_max_length(Symbol), len("Symbol"))
-    new_state_len = max(get_max_length(State), len("New State"))
-    new_symbol_len = max(get_max_length(Symbol), len("New Symbol"))
-    direction_len = max(get_max_length(Direction), len("Direction"))
+    symbol_len = Symbol.max_len("Symbol")
+    new_state_len = State.max_len("New State")
+    new_symbol_len = Symbol.max_len("New Symbol")
+    direction_len = Direction.max_len("Direction")
     total = symbol_len + new_state_len + new_symbol_len + direction_len + 11
 
     for state, value in dic.items():
@@ -54,16 +54,13 @@ def display(dic):
         pprint("New Symbol", new_symbol_len)
         pprint("Direction", direction_len, last=True)
         for symbol, tupl in value.items():
-            pprint(symbol.name, symbol_len)
+            pprint(symbol.name[4], symbol_len)
             pprint(tupl[0].name, new_state_len)
-            pprint(tupl[1].name, new_symbol_len)
+            pprint(tupl[1].name[4], new_symbol_len)
             pprint(tupl[2].name, direction_len, last=True)
 
         print("+" + "-" * total + "+")
         print("")
-
-def get_max_length(enum):
-    return max([len(e.name) for e in enum])
 
 def pprint(txt, nb, last=False):
     if last:
