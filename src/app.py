@@ -4,12 +4,14 @@ from os import listdir
 from os.path import isfile, join
 from game.tape import Tape
 from game.deck import Deck
+from main import Handler
 
 
 class App:
-    def __init__(self, size, background=(0, 0, 0)):
+    def __init__(self, argv, size, background=(0, 0, 0)):
         pygame.init()
         pygame.font.init()
+        self.argv = argv
         self.size = size
         self.background = background
         self.screen = pygame.display.set_mode(self.size, pygame.RESIZABLE)
@@ -29,7 +31,17 @@ class App:
 
     def init_game(self):
         self.tape = Tape("ABCDE", self)
-        Deck((1700, 800), self)
+        self.bob = Side((100, 100), ["rotlung_reanimator",
+            "necromancien_de_xathrid", "wild_evocation", "recycle",
+            "privileged_position", "vigor", "archonte_brulant"], (7, 1), self)
+        self.alice = Side((100, 500), ["cloak_of_invisibility",
+            "roue_du_soleil_et_de_la_lune", "gains_illusoires", "fungus_sliver",
+            "steely_resolve", "dread_of_night", "shared_triomph", "vigor",
+            "archonte_brulant", "ancient_tomb", "mesmeric_orb",
+            "augure_prismatique", "choke"], (7, 2), self)
+        self.handler = Handler(self.argv)
+        #state_changed, symbol, direction = handler.next() # bool, Symbol, int
+        #Deck((1700, 800), self)
 
     def spawn(self, obj):
         self.game_objects.append(obj)
@@ -62,7 +74,7 @@ class App:
 
 
 if __name__ == '__main__':
-    app = App((1920, 1080), (20, 30, 50))
+    app = App(sys.argv, (1920, 1080), (20, 30, 50))
     app.load_images()
     app.init_game()
     app.run()
