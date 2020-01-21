@@ -84,13 +84,10 @@ q_incr,C
 q_eat,F,>
 
 q_incr,F
-q_eat,G,>
-
-q_incr,G
 q_incr,A,<
 
 q_eat,A
 q_eat,A,>
 
 q_eat,_
-q_end,_,-
+q_end,G,-
