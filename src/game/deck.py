@@ -19,14 +19,19 @@ class Deck(GameObject):
         for c in self.cards:
             c.active = False
         self.fast_mode = False
+        self.tape.fast_mode = False
 
     def flip_mode(self):
         self.fast_mode = not self.fast_mode
+        self.tape.fast_mode = self.fast_mode
 
     def update(self, delta_time):
         GameObject.update(self, delta_time)
         if self.fast_mode:
-            self.next_phase()
+            self.change_state, self.next_symbol, self.offset = self.parser.next()
+            self.tape.fast_update(self.next_symbol, self.offset)
+            if self.offset == 0:
+                self.flip_mode()
         else:
             x, y = self.app.mouse
             if (self.app.mouse_click and
@@ -38,14 +43,13 @@ class Deck(GameObject):
         self.phase = (self.phase + 1) % 11
         if self.phase == 0:
             self.change_state, self.next_symbol, self.offset = self.parser.next()
-            print(self.change_state, self.next_symbol, self.offset)
             self.tape.play_infest()
             self.cards[0].active = True
         if self.phase == 1:
             self.tape.read_head()
         if self.phase == 2:
             color = "green" if self.offset == 1 else "white"
-            card = Card(self.next_symbol, color, 2, self.app.images[self.next_symbol + ".jpg"], (0, 0),
+            card = Card(self.next_symbol, color, 2, self.app.images[self.next_symbol + ".jpg"], (-60, 0),
                         self.tape.transform, self.app)
             self.tape.write_head(card)
         if self.phase == 3:
@@ -56,13 +60,13 @@ class Deck(GameObject):
             self.cards[1].active = True
         if self.phase == 5:
             self.cards[1].active = False
+            if self.change_state:
+                self.phase = 7
         if self.phase == 6:
             self.tape.play_coalition()
             self.cards[2].active = True
         if self.phase == 7:
             self.cards[2].active = False
-            if self.change_state:
-                self.phase = 9
         if self.phase == 8:
             self.tape.play_eteigneur()
             self.cards[3].active = True

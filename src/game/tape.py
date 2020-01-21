@@ -15,6 +15,7 @@ class Tape(GameObject):
         GameObject(pygame.transform.flip(cursor, False, True), (-25, -60), self.transform, app, 10)
         self.init_cards()
         self.old = self.index + 1
+        self.fast_mode = False
 
     def init_cards(self):
         for i in range(len(self.cards)):
@@ -32,6 +33,8 @@ class Tape(GameObject):
 
     def update(self, delta_time):
         GameObject.update(self, delta_time)
+        if self.fast_mode:
+            return
         for i in range(len(self.cards)):
             if self.cards[i] is None:
                 continue
@@ -67,11 +70,11 @@ class Tape(GameObject):
                 c.power += 2
 
     def play_coalition(self):
-        for c in self.cards:
-            c.power -= 1
+        pass
 
     def play_eteigneur(self):
-        pass
+        for c in self.cards:
+            c.power -= 1
 
     def move_index(self):
         if 0 <= self.index < len(self.cards):
@@ -79,4 +82,16 @@ class Tape(GameObject):
             card.move_local_y(0)
         self.index += 1 if self.cards[self.index].color == "green" else -1
 
-
+    def fast_update(self, symbol, offset):
+        color = "green" if offset == 1 else "white"
+        card = Card(symbol, color, 2, self.app.images[symbol + ".jpg"], (-60, 0),
+                    self.transform, self.app)
+        self.read_head()
+        self.write_head(card)
+        self.index += offset
+        for i in range(len(self.cards)):
+            distance_head = i - self.index
+            if distance_head == 0:
+                self.cards[i].move_local_y(20)
+            self.cards[i].power = abs(distance_head) + 2
+            self.cards[i].transform.local_x = distance_head * 120 - 60
