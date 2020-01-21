@@ -5,13 +5,20 @@ from game.cardinfo import CardInfo
 
 class Card(GameObject):
     def __init__(self, symbol, color, power, sprite, coords, parent, app):
+        GameObject.__init__(self, sprite, coords, parent, app)
         self.symbol = symbol
         self.color = color
         self.power = power
-        GameObject.__init__(self, sprite, coords, parent, app)
         self.info = CardInfo(self, self.transform, app)
         self.y_click = self.transform.local_y + 20
         self.y_base = self.transform.local_y
+
+    def flip(self):
+        self.sprite = pygame.transform.flip(self.sprite, False, True)
+        if self.info.transform.local_y == 140:
+            self.info.transform.local_y = 30
+        elif self.info.transform.local_y == 30:
+            self.info.transform.local_y = 140
 
     def move_local_y(self, val):
         mouse_over = self.y_click == self.transform.local_y
