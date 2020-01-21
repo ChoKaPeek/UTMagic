@@ -48,7 +48,6 @@ class Handler():
 def main():
     h = Handler(sys.argv)
     h.display()
-    symbol, direction = h.next()
 
 
 if __name__ == '__main__':
