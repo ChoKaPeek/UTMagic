@@ -58,6 +58,8 @@ class App:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     self.deck.flip_mode()
+                if event.key == pygame.K_LEFT:
+                    self.tape.index = 0
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.mouse_click = True
 
