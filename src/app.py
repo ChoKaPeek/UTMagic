@@ -43,7 +43,7 @@ class App:
         handler = Handler(self.argv)
         self.tape = Tape(handler.get_init(), (960, 360), self)
         # state_changed, symbol, direction = handler.next() # bool, char, int
-        self.deck = Deck((1600, 650), self.tape, self)
+        self.deck = Deck((1600, 650), self.tape, handler, self)
 
     def spawn(self, obj):
         self.game_objects.append(obj)

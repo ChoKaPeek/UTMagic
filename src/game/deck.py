@@ -3,9 +3,13 @@ from game.card import Card
 
 
 class Deck(GameObject):
-    def __init__(self, coords, tape, app):
+    def __init__(self, coords, tape, parser, app):
         GameObject.__init__(self, app.images["back.jpg"], coords, None, app)
         self.tape = tape
+        self.parser = parser
+        self.change_state = False
+        self.next_symbol = None
+        self.offset = 0
         self.phase = -1
         self.cards = []
         self.cards.append(GameObject(app.images["infest.jpg"], (0, -330), self.transform, app))
@@ -33,13 +37,17 @@ class Deck(GameObject):
     def next_phase(self):
         self.phase = (self.phase + 1) % 11
         if self.phase == 0:
+            self.change_state, self.next_symbol, self.offset = self.parser.next()
+            print(self.change_state, self.next_symbol, self.offset)
             self.tape.play_infest()
             self.cards[0].active = True
         if self.phase == 1:
             self.tape.read_head()
         if self.phase == 2:
-            self.tape.write_head(Card("A", "white", 2, self.app.images["A.jpg"], (0, 0), self.tape.transform,
-                                      self.app))  # TODO call parser.next()
+            color = "green" if self.offset == 1 else "white"
+            card = Card(self.next_symbol, color, 2, self.app.images[self.next_symbol + ".jpg"], (0, 0),
+                        self.tape.transform, self.app)
+            self.tape.write_head(card)
         if self.phase == 3:
             self.tape.remove_infest()
             self.cards[0].active = False
@@ -53,6 +61,8 @@ class Deck(GameObject):
             self.cards[2].active = True
         if self.phase == 7:
             self.cards[2].active = False
+            if self.change_state:
+                self.phase = 9
         if self.phase == 8:
             self.tape.play_eteigneur()
             self.cards[3].active = True
@@ -60,3 +70,5 @@ class Deck(GameObject):
             self.cards[3].active = False
         if self.phase == 10:
             self.tape.move_index()
+            if self.offset == 0:
+                self.fast_mode = False
