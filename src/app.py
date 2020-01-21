@@ -24,6 +24,7 @@ class App:
         self.mouse_click = False
         self.images = {}
         self.tape = None
+        self.deck = None
 
     def load_images(self):
         all_names = [f for f in listdir("../images") if isfile(join("../images", f))]
@@ -55,10 +56,8 @@ class App:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    self.tape.move_index(1)
-                if event.key == pygame.K_LEFT:
-                    self.tape.move_index(-1)
+                if event.key == pygame.K_SPACE:
+                    self.deck.flip_mode()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.mouse_click = True
 
