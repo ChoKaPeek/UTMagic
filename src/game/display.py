@@ -4,11 +4,11 @@ from engine.gameobject import GameObject
 
 class Display(GameObject):
     def __init__(self, sprite, app):
-        GameObject.__init__(self, sprite, (10, 10), None, app, layer=100)
-        self.size = (222, 310)
-        self.sprite = self.transform.scale(self.sprite, self.size)
+        GameObject.__init__(self, sprite, (100, 100), None, app, layer=100)
+        self.size = (444, 620)
+        self.sprite = pygame.transform.scale(self.sprite, self.size)
         self.rec = self.sprite.get_rect()
- 
+
     def update(self, delta_time):
         GameObject.update(self, delta_time)
         x, y = self.app.mouse

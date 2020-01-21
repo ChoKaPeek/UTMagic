@@ -7,9 +7,13 @@ class Handler():
     def __init__(self, argv):
         self.rules = parser.parse(argv[1])
         self.tape = encoder.encode(argv[2])
+        self.init_tape = self.tape
         self.padding = Symbol.by_rep("_")
         self.index = 0
         self.state = State(0)
+
+    def get_init(self):
+        return ["_"] * 3 + [e.name[4] for e in self.init_tape] + ["_"] * 1
 
     def update(self):
         if self.index == 0:
@@ -22,13 +26,13 @@ class Handler():
     def next(self):
         self.update()
         state, symbol, direction = self.rules[self.state][self.tape[self.index]]
-        changed = state.value == self.state.value
+        changed = state.value != self.state.value
         self.state = state
         self.tape[self.index] = symbol
         offset = self.move(direction)
         self.index += offset
 
-        return changed, symbol, offset # bool, Symbol, int
+        return changed, symbol.name[4], offset # bool, char, int
 
     def move(self, direction):
         if direction.name == "NONE":

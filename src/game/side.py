@@ -7,11 +7,11 @@ class Side(GameObject):
     def __init__(self, pos, permanents, grid, app):
         GameObject.__init__(self, None, pos, None, app, layer=-10)
         self.cards = []
-        next_pos(grid)
+        self.next_pos(grid)
         for p in permanents:
-            self.cards.append(Permanent(app.images[p + ".jpg"], next_pos(), self.transform, app))
+            self.cards.append(Permanent(app.images[p + ".jpg"], self.next_pos(), self.transform, app))
 
-    def next_pos(grid=None):
+    def next_pos(self, grid=None):
         if grid:
             self.x = 0
             self.y = 0
@@ -19,12 +19,12 @@ class Side(GameObject):
             self.max_y = grid[1]
         else:
             res = (self.x, self.y)
+            if self.y == self.max_y:
+                raise ValueError("Too many permanent cards for the grid")
             self.x += 1
             if self.x == self.max_x:
                 self.x = 0
                 self.y += 1
-                if self.y == self.max_y:
-                    raise ValueError("Too many permanent cards for the grid")
             return res
 
 

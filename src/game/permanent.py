@@ -5,11 +5,11 @@ from game.display import Display
 
 class Permanent(GameObject):
     def __init__(self, sprite, grid_pos, parent, app):
-        self.size = (22, 31)
+        self.size = (111, 155)
         coords = ((self.size[0] + 2) * grid_pos[0], (self.size[1] + 2) * grid_pos[1])
         GameObject.__init__(self, sprite, coords, parent, app)
         self.old_sprite = self.sprite
-        self.sprite = self.transform.scale(self.sprite, self.size)
+        self.sprite = pygame.transform.scale(self.sprite, self.size)
         self.rec = self.sprite.get_rect()
 
     def update(self, delta_time):

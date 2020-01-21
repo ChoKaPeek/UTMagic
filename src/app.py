@@ -3,6 +3,7 @@ import sys
 from os import listdir
 from os.path import isfile, join
 from game.tape import Tape
+from game.side import Side
 from game.deck import Deck
 from main import Handler
 
@@ -30,17 +31,17 @@ class App:
             self.images[name] = pygame.image.load(join("../images", name))
 
     def init_game(self):
-        self.tape = Tape("ABCDE", self)
         self.bob = Side((100, 100), ["rotlung_reanimator",
             "necromancien_de_xathrid", "wild_evocation", "recycle",
             "privileged_position", "vigor", "archonte_brulant"], (7, 1), self)
         self.alice = Side((100, 500), ["cloak_of_invisibility",
             "roue_du_soleil_et_de_la_lune", "gains_illusoires", "fungus_sliver",
-            "steely_resolve", "dread_of_night", "shared_triomph", "vigor",
+            "steely_resolve", "dread_of_night", "shared_triumph", "vigor",
             "archonte_brulant", "ancient_tomb", "mesmeric_orb",
             "augure_prismatique", "choke"], (7, 2), self)
         self.handler = Handler(self.argv)
-        #state_changed, symbol, direction = handler.next() # bool, Symbol, int
+        self.tape = Tape(self.handler.get_init(), self)
+        #state_changed, symbol, direction = handler.next() # bool, char, int
         #Deck((1700, 800), self)
 
     def spawn(self, obj):
