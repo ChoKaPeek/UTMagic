@@ -16,7 +16,7 @@ class Permanent(GameObject):
         GameObject.update(self, delta_time)
         x, y = self.app.mouse
         if self.rec.top < y < self.rec.bottom and self.rec.left < x < self.rec.right and self.app.mouse_click:
-            self.app.spawn(Display(self.old_sprite, self.app))
+            Display(self.old_sprite, self.app)
 
     def draw(self, screen):
         GameObject.draw(self, screen)

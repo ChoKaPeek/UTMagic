@@ -32,18 +32,18 @@ class App:
             self.images[name] = pygame.image.load(join("../images", name))
 
     def init_game(self):
-        self.bob = Side((100, 100), ["rotlung_reanimator",
-            "necromancien_de_xathrid", "wild_evocation", "recycle",
-            "privileged_position", "vigor", "archonte_brulant"], (7, 1), self)
-        self.alice = Side((100, 500), ["cloak_of_invisibility",
-            "roue_du_soleil_et_de_la_lune", "gains_illusoires", "fungus_sliver",
-            "steely_resolve", "dread_of_night", "shared_triumph", "vigor",
-            "archonte_brulant", "ancient_tomb", "mesmeric_orb",
-            "augure_prismatique", "choke"], (7, 2), self)
-        self.handler = Handler(self.argv)
-        self.tape = Tape(self.handler.get_init(), self)
-        #state_changed, symbol, direction = handler.next() # bool, char, int
-        #Deck((1700, 800), self)
+        Side((600, 50), ["rotlung_reanimator",
+                          "necromancien_de_xathrid", "wild_evocation", "recycle",
+                          "privileged_position", "vigor", "archonte_brulant"], (7, 1), self)
+        Side((600, 730), ["cloak_of_invisibility",
+                          "roue_du_soleil_et_de_la_lune", "gains_illusoires", "fungus_sliver",
+                          "steely_resolve", "dread_of_night", "shared_triumph", "vigor",
+                          "archonte_brulant", "ancient_tomb", "mesmeric_orb",
+                          "augure_prismatique", "choke"], (7, 2), self)
+        handler = Handler(self.argv)
+        self.tape = Tape(handler.get_init(), (960, 360), self)
+        # state_changed, symbol, direction = handler.next() # bool, char, int
+        self.deck = Deck((1600, 650), self.tape, self)
 
     def spawn(self, obj):
         self.game_objects.append(obj)

@@ -4,12 +4,12 @@ import pygame
 
 
 class Tape(GameObject):
-    def __init__(self, cards, app):
-        GameObject.__init__(self, None, (960, 100), None, app, -10)
+    def __init__(self, cards, coords, app):
+        GameObject.__init__(self, None, coords, None, app, -10)
         self.cards = []
         for c in cards:
             self.cards.append(Card(c, "green", 1, app.images[c + ".jpg"], (0, 0), self.transform, app))
-        self.index = len(self.cards) // 2
+        self.index = 3
         cursor = app.images["cursor.png"]
         GameObject(cursor, (-25, 220), self.transform, app, -2)
         GameObject(pygame.transform.flip(cursor, False, True), (-25, -60), self.transform, app, 10)
