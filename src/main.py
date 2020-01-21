@@ -4,10 +4,10 @@ import parser
 import encoder
 
 class Handler():
-    def __init__(self, inputs, rules):
+    def __init__(self, argv):
+        self.rules = parser.parse(argv[1])
+        self.tape = encoder.encode(argv[2])
         self.padding = Symbol.by_rep("_")
-        self.rules = rules
-        self.tape = inputs
         self.index = 0
         self.state = State(0)
 
@@ -22,28 +22,28 @@ class Handler():
     def next(self):
         self.update()
         state, symbol, direction = self.rules[self.state][self.tape[self.index]]
+        changed = state.value == self.state.value
         self.state = state
         self.tape[self.index] = symbol
         offset = self.move(direction)
         self.index += offset
 
-        return symbol, offset
+        return changed, symbol, offset # bool, Symbol, int
 
     def move(self, direction):
         if direction.name == "NONE":
             return 0
         return -1 if direction.name == "RIGHT" else 1
 
+    def display(self):
+        print("rules:")
+        parser.display(self.rules)
+        print("tape:")
+        encoder.display(self.tape)
+
 def main():
-    print("rules:")
-    rules = parser.parse(sys.argv[1])
-    parser.display(rules)
-
-    print("inputs:")
-    inputs = encoder.encode(sys.argv[2])
-    encoder.display(inputs)
-
-    h = Handler(inputs, rules)
+    h = Handler(sys.argv)
+    h.display()
     symbol, direction = h.next()
 
 
