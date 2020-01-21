@@ -37,7 +37,7 @@ class Handler():
     def move(self, direction):
         if direction.name == "NONE":
             return 0
-        return -1 if direction.name == "RIGHT" else 1
+        return 1 if direction.name == "RIGHT" else -1
 
     def display(self):
         print("rules:")
