@@ -20,6 +20,7 @@ class Deck(GameObject):
             c.active = False
         self.fast_mode = False
         self.tape.fast_mode = False
+        self.locked = False
 
     def flip_mode(self):
         self.fast_mode = not self.fast_mode
@@ -27,11 +28,14 @@ class Deck(GameObject):
 
     def update(self, delta_time):
         GameObject.update(self, delta_time)
+        if self.locked:
+            return
         if self.fast_mode:
             self.change_state, self.next_symbol, self.offset = self.parser.next()
-            self.tape.fast_update(self.next_symbol, self.offset)
+            self.tape.fast_update(self.change_state, self.next_symbol, self.offset)
             if self.offset == 0:
                 self.flip_mode()
+                self.locked = True
         else:
             x, y = self.app.mouse
             if (self.app.mouse_click and
@@ -40,6 +44,8 @@ class Deck(GameObject):
                 self.next_phase()
 
     def next_phase(self):
+        if self.locked:
+            return
         self.phase = (self.phase + 1) % 11
         if self.phase == 0:
             self.change_state, self.next_symbol, self.offset = self.parser.next()
@@ -68,11 +74,12 @@ class Deck(GameObject):
         if self.phase == 7:
             self.cards[2].active = False
         if self.phase == 8:
-            self.tape.play_eteigneur()
+            self.tape.play_eteigneur(self.change_state)
             self.cards[3].active = True
         if self.phase == 9:
             self.cards[3].active = False
         if self.phase == 10:
             self.tape.move_index()
             if self.offset == 0:
-                self.fast_mode = False
+                self.flip_mode()
+                self.locked = True

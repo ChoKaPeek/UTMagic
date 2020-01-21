@@ -7,7 +7,7 @@ class CardInfo(GameObject):
         GameObject.__init__(self, None, (55, 140), parent, app)
         self.card = card
         self.last_power = card.power
-        self.text_power = self.app.font.render(f"{self.card.power} / {self.card.power}", True, (100, 100, 100))
+        self.text_power = self.app.font.render(f"{self.card.power} / {self.card.power}", True, (10, 10, 10))
         self.rec_power = self.text_power.get_rect()
         self.text_symbol = self.app.font.render(self.card.symbol, True, (10, 10, 10))
         self.rec_symbol = self.text_symbol.get_rect()
@@ -15,7 +15,7 @@ class CardInfo(GameObject):
     def update(self, delta_time):
         if self.last_power != self.card.power:
             self.last_power = self.card.power
-            self.text_power = self.app.font.render(f"{self.card.power} / {self.card.power}", True, (100, 100, 100))
+            self.text_power = self.app.font.render(f"{self.card.power} / {self.card.power}", True, (10, 10, 10))
             self.rec_power = self.text_power.get_rect()
 
     def draw(self, screen):

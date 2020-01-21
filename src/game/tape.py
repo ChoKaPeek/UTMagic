@@ -1,5 +1,6 @@
 from engine.gameobject import GameObject
 from game.card import Card
+from game.counter import Counter
 import pygame
 
 
@@ -16,6 +17,9 @@ class Tape(GameObject):
         self.init_cards()
         self.old = self.index + 1
         self.fast_mode = False
+        self.step_counter = Counter("Step(s): ", (70, -120), self.transform, app)
+        self.turn_counter = Counter("Turn(s): ", (70, -85), self.transform, app)
+        self.state_counter = Counter("State: ", (70, -50), self.transform, app)
 
     def init_cards(self):
         for i in range(len(self.cards)):
@@ -44,6 +48,7 @@ class Tape(GameObject):
             self.cards[i].transform.move_to((distance_head * 120 - 60, self.cards[i].transform.local_y), delta_time)
 
     def play_infest(self):
+        self.turn_counter.incr()
         for c in self.cards:
             if c is not None:
                 c.power -= 2
@@ -65,16 +70,21 @@ class Tape(GameObject):
                 c.power += 2
 
     def play_cleansing(self):
+        self.turn_counter.incr()
         for c in self.cards:
             if c.color == self.cards[self.index].color:
                 c.power += 2
 
     def play_coalition(self):
-        pass
+        self.turn_counter.incr()
 
-    def play_eteigneur(self):
+    def play_eteigneur(self, change):
+        if change:
+            self.state_counter.incr((-1) ** self.state_counter.count)
+        self.turn_counter.incr()
         for c in self.cards:
             c.power -= 1
+        self.step_counter.incr()
 
     def move_index(self):
         if 0 <= self.index < len(self.cards):
@@ -82,7 +92,14 @@ class Tape(GameObject):
             card.move_local_y(0)
         self.index += 1 if self.cards[self.index].color == "green" else -1
 
-    def fast_update(self, symbol, offset):
+    def fast_update(self, change, symbol, offset):
+        self.step_counter.incr()
+        if change:
+            self.turn_counter.incr(3)
+            self.state_counter.incr((-1) ** self.state_counter.count)
+        else:
+            self.turn_counter.incr(4)
+
         color = "green" if offset == 1 else "white"
         card = Card(symbol, color, 2, self.app.images[symbol + ".jpg"], (-60, 0),
                     self.transform, self.app)
