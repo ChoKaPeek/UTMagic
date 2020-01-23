@@ -35,7 +35,7 @@ class App:
         Side((565, 50), ["rotlung_reanimator",
                          "necromancien_de_xathrid", "wild_evocation", "recycle",
                          "privileged_position", "vigor", "archonte_brulant"], (7, 1), self)
-        Side((565, 730), ["cloak_of_invisibility",
+        Side((565, 730), ["rotlung_reanimator", "cloak_of_invisibility",
                           "roue_du_soleil_et_de_la_lune", "gains_illusoires", "fungus_sliver",
                           "steely_resolve", "dread_of_night", "shared_triumph", "vigor",
                           "archonte_brulant", "ancient_tomb", "mesmeric_orb",

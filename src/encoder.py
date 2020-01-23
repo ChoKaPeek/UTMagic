@@ -1,5 +1,13 @@
 from enums import Direction, State, Symbol
 
+def encode_number(s):
+    inputs = []
+    for c in s:
+        for rep in c:
+            inputs.append(Symbol.by_rep(rep))
+
+    return inputs
+
 def encode(s):
     inputs = []
     for c in s:
